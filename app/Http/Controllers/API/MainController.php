@@ -12,6 +12,7 @@ class MainController extends Controller
     use FileUploadTrait;
 
    protected $maim;
+
     public function  __construct(Main $main)
     {
        $this->maim=$main;

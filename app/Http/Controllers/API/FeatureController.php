@@ -4,18 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\FileUploadTrait;
-use App\Models\Goal;
+
+use App\Models\Feature;
 use Illuminate\Http\Request;
 
-class GoalController extends Controller
+class FeatureController extends Controller
 {
 
     use FileUploadTrait;
-
-    protected $Goal;
-    public function  __construct(Goal $Goal)
+    protected $Feature;
+    public function  __construct(Feature $Feature)
     {
-        $this->Goal=$Goal;
+        $this->Feature=$Feature;
     }
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class GoalController extends Controller
      */
     public function index()
     {
-        return  response()->json($this->Goal::all());
+            return response()->json( $this->Feature::all());
     }
 
     /**
@@ -32,9 +32,9 @@ class GoalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request  $request)
     {
-        //
+
     }
 
     /**
@@ -45,31 +45,31 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        $create_goal= $this->Goal;
+        //dd($request->all());
+        $create_feature= $this->Feature;
 
         if ($request->hasFile('image')){
-            $image_name= $this->uploadFile($request->image,'uploads/goals/');
+            $image_name= $this->uploadFile($request->image,'uploads/feature/');
         }
 
         //$image_name=$request->image->hashName();
-        $create_goal::create([
+        $create_feature::create([
             'title'=>$request->title,
             'description'=>$request->description,
-            'header'=>$request->header,
-            'header_ar'=>$request->header_ar,
             'title_ar'=>$request->title_ar,
             'description_ar'=>$request->description_ar,
-            'images'=>isset($image_name) ? 'uploads/goals/' . $image_name : null,
+            'image'=>isset($image_name) ? 'uploads/feature/' . $image_name : null,
         ]);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Feature  $feature
      * @return \Illuminate\Http\Response
      */
-    public function show(Goal $goal)
+    public function show(Feature $feature)
     {
         //
     }
@@ -77,49 +77,51 @@ class GoalController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Feature  $feature
      * @return \Illuminate\Http\Response
      */
-    public function edit(Goal $goal)
+    public function edit($id)
     {
-        //
+        return response()->json($this->Feature::findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Feature  $feature
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request)
+    public function update(Request $request,$id)
     {
-        $update_goal= $this->Goal::findOrFail($id);
 
+        $update_feature= $this->Feature::findOrFail($id);
+       //dd($update_feature);
         if ($request->hasFile('image')){
-            $image_name= $this->uploadFile($request->image,'uploads/goals/');
+            $image_name= $this->uploadFile($request->image,'uploads/feature/');
         }
 
         //$image_name=$request->image->hashName();
-        $update_goal->update([
+        $update_feature->update([
             'title'=>$request->title,
             'description'=>$request->description,
-            'header'=>$request->header,
-            'header_ar'=>$request->header_ar,
             'title_ar'=>$request->title_ar,
             'description_ar'=>$request->description_ar,
-            'images'=>isset($image_name) ? 'uploads/goals/' . $image_name : $update_goal->images,
+            'image'=>isset($image_name) ? 'uploads/feature/' . $image_name : $update_feature->image,
         ]);
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Feature  $feature
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Goal $goal)
+    public function destroy($id)
     {
-        //
+            $this->Feature::findOrFail($id)->delete();
+                return 'deleted';
     }
 }

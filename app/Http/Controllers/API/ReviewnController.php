@@ -4,18 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\FileUploadTrait;
-use App\Models\Goal;
+use App\Models\Feature;
+use App\Models\Reviewn;
 use Illuminate\Http\Request;
 
-class GoalController extends Controller
+class ReviewnController extends Controller
 {
 
     use FileUploadTrait;
-
-    protected $Goal;
-    public function  __construct(Goal $Goal)
+    protected $reviews;
+    public function  __construct(Reviewn $reviews)
     {
-        $this->Goal=$Goal;
+        $this->reviews=$reviews;
     }
     /**
      * Display a listing of the resource.
@@ -24,7 +24,8 @@ class GoalController extends Controller
      */
     public function index()
     {
-        return  response()->json($this->Goal::all());
+        return response()->json( $this->reviews::all());
+
     }
 
     /**
@@ -45,31 +46,29 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        $create_goal= $this->Goal;
+        $create_reviews= $this->reviews;
 
         if ($request->hasFile('image')){
-            $image_name= $this->uploadFile($request->image,'uploads/goals/');
+            $image_name= $this->uploadFile($request->image,'uploads/reviews/');
         }
 
         //$image_name=$request->image->hashName();
-        $create_goal::create([
-            'title'=>$request->title,
+        $create_reviews::create([
+            'name'=>$request->name,
             'description'=>$request->description,
-            'header'=>$request->header,
-            'header_ar'=>$request->header_ar,
-            'title_ar'=>$request->title_ar,
             'description_ar'=>$request->description_ar,
-            'images'=>isset($image_name) ? 'uploads/goals/' . $image_name : null,
+            'image'=>isset($image_name) ? 'uploads/reviews/' . $image_name : null,
         ]);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Reviewn  $reviewn
      * @return \Illuminate\Http\Response
      */
-    public function show(Goal $goal)
+    public function show(Reviewn $reviewn)
     {
         //
     }
@@ -77,49 +76,48 @@ class GoalController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Reviewn  $reviewn
      * @return \Illuminate\Http\Response
      */
-    public function edit(Goal $goal)
+    public function edit($id)
     {
-        //
+        return response()->json($this->reviews::findOrFail($id));
+
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Reviewn  $reviewn
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request)
+    public function update(Request $request,$id)
     {
-        $update_goal= $this->Goal::findOrFail($id);
+        $create_reviews= $this->reviews::findOrFail($id);
 
         if ($request->hasFile('image')){
-            $image_name= $this->uploadFile($request->image,'uploads/goals/');
+
+            $image_name= $this->uploadFile($request->image,'uploads/reviews/');
         }
 
-        //$image_name=$request->image->hashName();
-        $update_goal->update([
-            'title'=>$request->title,
+        $create_reviews->update([
+            'name'=>$request->name,
             'description'=>$request->description,
-            'header'=>$request->header,
-            'header_ar'=>$request->header_ar,
-            'title_ar'=>$request->title_ar,
             'description_ar'=>$request->description_ar,
-            'images'=>isset($image_name) ? 'uploads/goals/' . $image_name : $update_goal->images,
+            'image'=>isset($image_name) ? 'uploads/reviews/' . $image_name : null,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\Reviewn  $reviewn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Goal $goal)
+    public function destroy($id)
     {
-        //
+        $this->reviews::findOrFail($id)->delete();
+        return 'deleted';
     }
 }
