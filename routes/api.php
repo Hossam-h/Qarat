@@ -7,6 +7,9 @@ use App\Http\Controllers\API\GoalController;
 use App\Http\Controllers\API\FeatureController;
 use App\Http\Controllers\API\ReviewnController;
 use App\Http\Controllers\API\QuestionController;
+use App\Http\Controllers\API\ContactController;
+use App\Http\Controllers\API\FooterController;
+use App\Http\Controllers\API\IconController;
 
 
 /*
@@ -36,3 +39,11 @@ Route::resource('features',FeatureController::class);
 Route::resource('reviews',ReviewnController::class);
 
 Route::resource('questions',QuestionController::class);
+
+Route::resource('contacts',ContactController::class);
+
+Route::get('footer/edit/{id}',[FooterController::class,'edit']);
+Route::post('footer/update/{id}',[FooterController::class,'update']);
+Route::get('/footer',[FooterController::class,'index']);
+
+Route::resource('icons',IconController::class);

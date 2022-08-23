@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Question;
-
+use App\Models\Icon;
 use Illuminate\Http\Request;
 
-class QuestionController extends Controller
+class IconController extends Controller
 {
 
-    protected $Question;
-    public function  __construct(Question $Question)
+    protected $Icon;
+    public function  __construct(Icon $Icon)
     {
-        $this->Question=$Question;
+        $this->Icon=$Icon;
     }
     /**
      * Display a listing of the resource.
@@ -22,7 +21,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return response()->json( $this->Question::all());
+        return response()->json($this->Icon::all());
 
     }
 
@@ -33,7 +32,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -44,24 +43,23 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $create_question= $this->Question;
+        $create_icon= $this->Icon;
 
 
-        $create_question::create([
-            'question'=>$request->question,
-            'answer'=>$request->answer,
-            'question_ar'=>$request->question_ar,
-            'answer_ar'=>$request->answer_ar,
+        $create_icon::create([
+            'icons'=>$request->icons,
+            'links'=>$request->links,
+
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Icon  $icon
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $question)
+    public function show(Icon $icon)
     {
         //
     }
@@ -69,12 +67,12 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Icon  $icon
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        return response()->json($this->Question::findOrFail($id));
+        return response()->json($this->Icon::findOrFail($id));
 
     }
 
@@ -82,30 +80,30 @@ class QuestionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Icon  $icon
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $create_question= $this->Question::findOrFail($id);
+        $update_icons= $this->Icon::findOrFail($id);
 
-        $create_question->update([
-            'question'=>$request->question,
-            'answer'=>$request->answer,
-            'question_ar'=>$request->question_ar,
-            'answer_ar'=>$request->answer_ar,
+
+        $update_icons->update([
+            'icons'=>$request->icons,
+            'links'=>$request->links,
+
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Icon  $icon
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $this->Question::findOrFail($id)->delete();
+        $this->Icon::findOrFail($id)->delete();
         return 'deleted';
     }
 }
