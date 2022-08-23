@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Question;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
@@ -44,6 +45,16 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'question'=>'required|string',
+            'answer'=>'required|string',
+            'question_ar'=>'required|string',
+            'answer_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
         $create_question= $this->Question;
 
 
@@ -85,8 +96,19 @@ class QuestionController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
-    {
+    public function update(Request $request,$id){
+
+
+         $validator = Validator::make($request->all(), [
+             'question'=>'required|string',
+             'answer'=>'required|string',
+             'question_ar'=>'required|string',
+             'answer_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
         $create_question= $this->Question::findOrFail($id);
 
         $create_question->update([

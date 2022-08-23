@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Icon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class IconController extends Controller
 {
@@ -43,9 +44,16 @@ class IconController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'icons'=>'required|string',
+            'links'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
+
         $create_icon= $this->Icon;
-
-
         $create_icon::create([
             'icons'=>$request->icons,
             'links'=>$request->links,
@@ -85,6 +93,14 @@ class IconController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'icons'=>'required|string',
+            'links'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
         $update_icons= $this->Icon::findOrFail($id);
 
 

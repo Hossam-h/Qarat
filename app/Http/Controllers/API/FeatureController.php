@@ -7,6 +7,7 @@ use App\Http\Traits\FileUploadTrait;
 
 use App\Models\Feature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FeatureController extends Controller
 {
@@ -45,14 +46,22 @@ class FeatureController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'title'=>'required|string',
+            'description'=>'required|string',
+            'title_ar'=>'required|string',
+            'description_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
         $create_feature= $this->Feature;
 
         if ($request->hasFile('image')){
             $image_name= $this->uploadFile($request->image,'uploads/feature/');
         }
 
-        //$image_name=$request->image->hashName();
         $create_feature::create([
             'title'=>$request->title,
             'description'=>$request->description,
@@ -94,9 +103,18 @@ class FeatureController extends Controller
      */
     public function update(Request $request,$id)
     {
+        $validator = Validator::make($request->all(), [
+            'title'=>'required|string',
+            'description'=>'required|string',
+            'title_ar'=>'required|string',
+            'description_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
 
         $update_feature= $this->Feature::findOrFail($id);
-       //dd($update_feature);
         if ($request->hasFile('image')){
             $image_name= $this->uploadFile($request->image,'uploads/feature/');
         }

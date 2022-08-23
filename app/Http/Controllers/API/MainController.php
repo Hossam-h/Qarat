@@ -6,6 +6,7 @@ use App\Models\Main;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileUploadTrait;
+use Illuminate\Support\Facades\Validator;
 
 class MainController extends Controller
 {
@@ -19,10 +20,23 @@ class MainController extends Controller
     }
 
     public function  index(){
-        return response(Main::all());
+        return response()->json($this->maim::all());
     }
 
     public function  update($id,Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'title'=>'required|string',
+            'Content'=>'required|string',
+            'trail'=>'required|string',
+            'title_ar'=>'required|string',
+            'Content_ar'=>'required|string',
+            'trail_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
        $main_update= $this->maim->findOrFail($id);
 
        if ($request->hasFile('image')){
@@ -39,5 +53,9 @@ class MainController extends Controller
             'trail_ar'=>$request->trail_ar,
               'images'=>isset($image_name) ? 'uploads/main/' . $image_name : $main_update->images,
         ]);
+    }
+
+    public function  edit($id){
+        return response()->json($this->maim::findOrFail($id));
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Traits\FileUploadTrait;
 use App\Models\Feature;
 use App\Models\Reviewn;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ReviewnController extends Controller
 {
@@ -46,6 +47,15 @@ class ReviewnController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name'=>'required|string',
+            'description'=>'required|string',
+            'description_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
         $create_reviews= $this->reviews;
 
         if ($request->hasFile('image')){
@@ -94,6 +104,16 @@ class ReviewnController extends Controller
      */
     public function update(Request $request,$id)
     {
+        $validator = Validator::make($request->all(), [
+            'name'=>'required|string',
+            'description'=>'required|string',
+            'description_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
+
         $create_reviews= $this->reviews::findOrFail($id);
 
         if ($request->hasFile('image')){

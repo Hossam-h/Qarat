@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\FileUploadTrait;
+use Illuminate\Support\Facades\Validator;
+
 use App\Models\Goal;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\GoalValidator;
 class GoalController extends Controller
 {
 
@@ -45,6 +47,20 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title'=>'required|string',
+            'description'=>'required|string',
+            'header'=>'required|string',
+            'header_ar'=>'required|string',
+            'title_ar'=>'required|string',
+            'description_ar'=>'required|string'
+        ]);
+
+        if($validator->fails()){
+             return  response()->json($validator->errors());
+
+        }
+
         $create_goal= $this->Goal;
 
         if ($request->hasFile('image')){
@@ -80,9 +96,10 @@ class GoalController extends Controller
      * @param  \App\Models\Goal  $goal
      * @return \Illuminate\Http\Response
      */
-    public function edit(Goal $goal)
+    public function edit($id)
     {
-        //
+        return response()->json($this->Goal::findOrFail($id));
+
     }
 
     /**
@@ -94,6 +111,21 @@ class GoalController extends Controller
      */
     public function update($id,Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'title'=>'required|string',
+            'description'=>'required|string',
+            'header'=>'required|string',
+            'header_ar'=>'required|string',
+            'title_ar'=>'required|string',
+            'description_ar'=>'required|string'
+        ]);
+
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
+
         $update_goal= $this->Goal::findOrFail($id);
 
         if ($request->hasFile('image')){

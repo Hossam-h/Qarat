@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Footer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FooterController extends Controller
 {
@@ -79,9 +80,15 @@ class FooterController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'description'=>'required|string',
+            'description_ar'=>'required|string',
+        ]);
+        if($validator->fails()){
+            return  response()->json($validator->errors());
+
+        }
         $update_footer= $this->footer::findOrFail($id);
-
-
         $update_footer->update([
             'description'=>$request->description,
             'description_ar'=>$request->description_ar,
