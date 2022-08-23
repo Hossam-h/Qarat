@@ -16,6 +16,7 @@ class CreateReviewnsTable extends Migration
         Schema::create('reviewns', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('company_name');
             $table->text('description');
             $table->text('description_ar');
             $table->string('image');

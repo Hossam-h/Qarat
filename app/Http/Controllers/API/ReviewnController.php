@@ -51,6 +51,7 @@ class ReviewnController extends Controller
             'name'=>'required|string',
             'description'=>'required|string',
             'description_ar'=>'required|string',
+            'company_name'=>'required|string'
         ]);
         if($validator->fails()){
             return  response()->json($validator->errors());
@@ -67,6 +68,7 @@ class ReviewnController extends Controller
             'name'=>$request->name,
             'description'=>$request->description,
             'description_ar'=>$request->description_ar,
+            'company_name'=>$request->company_name,
             'image'=>isset($image_name) ? 'uploads/reviews/' . $image_name : null,
         ]);
 
@@ -108,6 +110,8 @@ class ReviewnController extends Controller
             'name'=>'required|string',
             'description'=>'required|string',
             'description_ar'=>'required|string',
+            'company_name'=>'required|string'
+
         ]);
         if($validator->fails()){
             return  response()->json($validator->errors());
@@ -125,6 +129,8 @@ class ReviewnController extends Controller
             'name'=>$request->name,
             'description'=>$request->description,
             'description_ar'=>$request->description_ar,
+            'company_name'=>$request->company_name,
+
             'image'=>isset($image_name) ? 'uploads/reviews/' . $image_name : null,
         ]);
     }

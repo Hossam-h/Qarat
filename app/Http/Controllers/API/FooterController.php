@@ -102,8 +102,8 @@ class FooterController extends Controller
      * @param  \App\Models\Footer  $footer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Footer $footer)
+    public function destroy($id)
     {
-        //
+
     }
 }

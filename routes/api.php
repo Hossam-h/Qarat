@@ -10,6 +10,8 @@ use App\Http\Controllers\API\QuestionController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\FooterController;
 use App\Http\Controllers\API\IconController;
+use App\Http\Controllers\API\FreetrailController;
+
 
 
 /*
@@ -51,3 +53,6 @@ Route::get('/footer',[FooterController::class,'index']);
 
 //icons
 Route::resource('icons',IconController::class);
+
+//freetrail
+Route::resource('freetrials',FreetrailController::class);
